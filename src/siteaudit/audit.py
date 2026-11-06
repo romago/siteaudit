@@ -1,12 +1,13 @@
 """Run a crawl and every check, and collect the result."""
 
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime
 
 from siteaudit.checks.page import run_page_checks
 from siteaudit.checks.site import run_site_checks
 from siteaudit.crawler import CrawlOptions, CrawlResult, crawl
-from siteaudit.models import AuditResult, Issue
+from siteaudit.models import AuditResult, Issue, Page
 
 
 def collect_issues(result: CrawlResult) -> list[Issue]:
@@ -31,8 +32,12 @@ def build_result(result: CrawlResult, started_at: datetime, duration_s: float) -
     )
 
 
-async def run_audit(url: str, options: CrawlOptions | None = None) -> AuditResult:
+async def run_audit(
+    url: str,
+    options: CrawlOptions | None = None,
+    on_page: Callable[[Page], None] | None = None,
+) -> AuditResult:
     started_at = datetime.now(UTC)
     clock = time.perf_counter()
-    result = await crawl(url, options)
+    result = await crawl(url, options, on_page)
     return build_result(result, started_at, time.perf_counter() - clock)

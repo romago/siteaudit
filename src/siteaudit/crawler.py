@@ -2,6 +2,7 @@
 
 import asyncio
 from collections import deque
+from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 
 import httpx
@@ -56,7 +57,12 @@ class CrawlResult:
 
 
 class Crawler:
-    def __init__(self, start_url: str, options: CrawlOptions | None = None) -> None:
+    def __init__(
+        self,
+        start_url: str,
+        options: CrawlOptions | None = None,
+        on_page: Callable[[Page], None] | None = None,
+    ) -> None:
         normalized = normalize_url(start_url)
         if normalized is None:
             raise ValueError(f"not an http(s) URL: {start_url!r}")
@@ -66,6 +72,7 @@ class Crawler:
         self._queue: deque[str] = deque()
         self._sitemap_queue: deque[str] = deque()
         self._found_via: dict[str, list[str]] = {}
+        self._on_page = on_page
 
     async def run(self) -> CrawlResult:
         opts = self.options
@@ -125,9 +132,12 @@ class Crawler:
             self._follow(page)
             return
         # A redirecting URL keeps its status and chain but has no content of its own.
-        self.result.pages[result.url] = parse_page(
+        redirecting = parse_page(
             replace(result, content=b""), host, self._found_via.get(result.url)
         )
+        self.result.pages[result.url] = redirecting
+        if self._on_page is not None:
+            self._on_page(redirecting)
         target = result.final_url
         if not result.ok or not is_internal(target, host):
             return
@@ -143,6 +153,8 @@ class Crawler:
         self._follow(target_page)
 
     def _follow(self, page: Page) -> None:
+        if self._on_page is not None:
+            self._on_page(page)
         for link in page.links:
             self.result.inlinks.setdefault(link, set()).add(page.url)
             self._discover(link, "link", page.url)
@@ -222,5 +234,9 @@ class Crawler:
         self.result.limit_reached = bool(self._queue or self._sitemap_queue)
 
 
-async def crawl(start_url: str, options: CrawlOptions | None = None) -> CrawlResult:
-    return await Crawler(start_url, options).run()
+async def crawl(
+    start_url: str,
+    options: CrawlOptions | None = None,
+    on_page: Callable[[Page], None] | None = None,
+) -> CrawlResult:
+    return await Crawler(start_url, options, on_page).run()
