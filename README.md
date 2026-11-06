@@ -67,7 +67,7 @@ short fix.
 | `lang-missing`, `viewport-missing` | warning |
 | `img-alt-missing` (an empty `alt=""` is fine) | warning |
 | `noindex`, `nofollow` (meta robots or `X-Robots-Tag`) | warning, notice |
-| `canonical-missing`, `canonical-multiple`, `canonical-other` | notice, warning, notice |
+| `canonical-missing`, `canonical-multiple`, `canonical-other` (not for `?query` variants that point to their own path) | notice, warning, notice |
 | `hreflang-invalid`, `hreflang-no-self` | warning |
 | `json-ld-invalid` (and the `@type` values found are listed) | error |
 | `slow-response` (> 1 s), `html-too-large` (> 1 MB) | warning |
@@ -84,7 +84,7 @@ short fix.
 | `robots-missing`, `robots-no-sitemap`, `robots-blocked` | warning, notice, notice |
 | `sitemap-missing`, `sitemap-invalid` | warning, error |
 | `sitemap-error`, `sitemap-redirect`, `sitemap-noindex`, `sitemap-non-canonical`, `sitemap-blocked` | error, warning, error, warning, error |
-| `sitemap-orphan` (only in the sitemap), `not-in-sitemap` | notice |
+| `sitemap-other-host`, `sitemap-orphan` (only in the sitemap), `not-in-sitemap` | notice |
 
 ### Score
 

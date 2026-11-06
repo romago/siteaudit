@@ -111,7 +111,9 @@ def check_canonical(page: Page) -> Iterator[Issue]:
         return
     if page.canonical_count > 1:
         yield issue("canonical-multiple", page.url, f"{page.canonical_count} canonical links.")
-    if page.canonical != page.url:
+    # A URL with query parameters that points to the same path without them is the
+    # standard setup for filters and tracking parameters, not something to review.
+    if page.canonical != page.url and page.canonical != page.url.split("?", 1)[0]:
         yield issue(
             "canonical-other", page.url, f"Canonical: {page.canonical}", related=[page.canonical]
         )

@@ -6,6 +6,7 @@ from collections.abc import Callable, Iterator
 from siteaudit.checks.rules import issue
 from siteaudit.crawler import CrawlResult
 from siteaudit.models import Issue, Page
+from siteaudit.urls import is_internal
 
 SiteCheck = Callable[[CrawlResult], Iterator[Issue]]
 SITE_CHECKS: list[SiteCheck] = []
@@ -221,6 +222,9 @@ def check_sitemap_urls(crawl: CrawlResult) -> Iterator[Issue]:
     start = crawl.pages.get(crawl.start_url)
     reached |= {crawl.start_url, start.final_url} if start else {crawl.start_url}
     for url in crawl.sitemap_urls:
+        if not is_internal(url, crawl.site_host):
+            yield issue("sitemap-other-host", url, f"Listed in the sitemap of {crawl.site_host}.")
+            continue
         page = crawl.pages.get(url)
         if page is None:
             continue

@@ -93,6 +93,10 @@ def test_canonical() -> None:
     assert "canonical-missing" in codes(run_page_checks(make_page(head="<title>T</title>")))
     other = make_page(head='<link rel="canonical" href="https://example.com/other">')
     assert "canonical-other" in codes(run_page_checks(other))
+    variant = make_page(url=f"{URL}?utm_source=x", head=f'<link rel="canonical" href="{URL}">')
+    assert "canonical-other" not in codes(run_page_checks(variant))
+    other_path = make_page(url=f"{URL}?page=2", head=f'<link rel="canonical" href="{URL}/2">')
+    assert "canonical-other" in codes(run_page_checks(other_path))
     two = make_page(head=f'<link rel="canonical" href="{URL}"><link rel="canonical" href="/x">')
     assert "canonical-multiple" in codes(run_page_checks(two))
 

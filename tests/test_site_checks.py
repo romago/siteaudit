@@ -196,6 +196,16 @@ def test_sitemap_urls() -> None:
     assert [i.url for i in by_code(issues, "not-in-sitemap")] == [f"{BASE}/unlisted"]
 
 
+def test_sitemap_url_on_another_host() -> None:
+    home = html("/")
+    listed = [f"{BASE}/", "https://portfolio.example.com/", "https://www.example.com/"]
+    issues = run_site_checks(crawl_of(home, sitemap_urls=listed))
+    # www and the bare domain count as one site
+    assert [i.url for i in by_code(issues, "sitemap-other-host")] == [
+        "https://portfolio.example.com/"
+    ]
+
+
 def test_orphans_are_not_reported_when_the_crawl_was_cut_short() -> None:
     result = crawl_of(html("/"), html("/orphan"), limit_reached=True)
     assert by_code(run_site_checks(result), "sitemap-orphan") == []

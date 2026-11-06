@@ -95,6 +95,9 @@ _RULES = [
          "List only canonical URLs in the sitemap."),
     Rule("sitemap-blocked", E, "Sitemap URL blocked by robots.txt",
          "Remove it from the sitemap or allow it in robots.txt."),
+    Rule("sitemap-other-host", N, "Sitemap lists a URL on another host",
+         "List it in that host's own sitemap; search engines skip URLs from other hosts "
+         "unless both sites are verified in the same account."),
     Rule("sitemap-orphan", N, "Page only found in the sitemap",
          "Link to it from at least one other page."),
     Rule("not-in-sitemap", N, "Indexable page missing from the sitemap",
