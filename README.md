@@ -9,10 +9,15 @@ broken links with the pages that link to them, redirect chains, titles and descr
 canonicals, hreflang, structured data, robots.txt and the sitemap compared with what the
 crawl found. The HTML report is one self-contained file you can send to a client.
 
+![HTML report for iglin.dev](https://raw.githubusercontent.com/romago/siteaudit/main/docs/report.png)
+
 ```bash
 pip install siteaudit
 siteaudit https://example.com --max-pages 200 --report report.html
 ```
+
+Requires Python 3.12 or newer. With [uv](https://docs.astral.sh/uv/) you can run it without
+installing: `uvx siteaudit https://example.com`.
 
 ## Usage
 
