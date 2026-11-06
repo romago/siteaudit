@@ -17,12 +17,12 @@ class Rule:
 
 _RULES = [
     # status and redirects
-    Rule("http-4xx", E, "Page returns a 4xx error", "Restore the page or remove links to it."),
+    Rule("http-4xx", E, "Broken page or link (4xx)",
+         "Restore the page, or fix the links on the pages that link to it."),
     Rule("http-5xx", E, "Page returns a 5xx error", "Check the server logs for this URL."),
     Rule("fetch-failed", E, "Page could not be fetched", "Check that the server responds in time."),
     Rule("redirect-loop", E, "Redirect loop", "Fix the redirect rules so the chain ends."),
     Rule("redirect-chain", W, "Redirect chain", "Redirect straight to the final URL in one hop."),
-    Rule("broken-link", E, "Broken internal link", "Fix or remove the links on the listed pages."),
     Rule("link-to-redirect", N, "Internal link to a redirect",
          "Update the links on the listed pages to point to the final URL."),
     # title and description
