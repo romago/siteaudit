@@ -2,7 +2,7 @@
 
 ## 0.1.0 — 2026-11-06
 
-First release.
+First release, published on PyPI as `site-audit` (the command is `siteaudit`).
 
 - Async crawl of one site: robots.txt (Google's matching rules), sitemaps and sitemap
   indexes (gzip too), internal links, canonical and hreflang targets; concurrency and

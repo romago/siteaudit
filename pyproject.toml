@@ -1,5 +1,5 @@
 [project]
-name = "siteaudit"
+name = "site-audit"
 version = "0.1.0"
 description = "Crawl a website and write an SEO and technical audit report."
 readme = "README.md"
@@ -36,6 +36,10 @@ Issues = "https://github.com/romago/siteaudit/issues"
 
 [project.scripts]
 siteaudit = "siteaudit.cli:app"
+
+[tool.uv.build-backend]
+# The PyPI name is site-audit; the import package and the command stay siteaudit.
+module-name = "siteaudit"
 
 [build-system]
 requires = ["uv_build>=0.13.5,<0.14.0"]

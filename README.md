@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/romago/siteaudit/actions/workflows/ci.yml/badge.svg)](https://github.com/romago/siteaudit/actions/workflows/ci.yml)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
+[![PyPI](https://img.shields.io/pypi/v/site-audit)](https://pypi.org/project/site-audit/)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 A command-line tool that crawls a website and writes an SEO and technical audit report:
@@ -12,12 +13,14 @@ crawl found. The HTML report is one self-contained file you can send to a client
 ![HTML report for iglin.dev](https://raw.githubusercontent.com/romago/siteaudit/main/docs/report.png)
 
 ```bash
-pip install siteaudit
+pip install site-audit
 siteaudit https://example.com --max-pages 200 --report report.html
 ```
 
 Requires Python 3.12 or newer. With [uv](https://docs.astral.sh/uv/) you can run it without
-installing: `uvx siteaudit https://example.com`.
+installing: `uvx --from site-audit siteaudit https://example.com`.
+
+The package is `site-audit` on PyPI; the command and the import name are `siteaudit`.
 
 ## Usage
 

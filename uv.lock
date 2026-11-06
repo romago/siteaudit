@@ -920,7 +920,7 @@ wheels = [
 ]
 
 [[package]]
-name = "siteaudit"
+name = "site-audit"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
